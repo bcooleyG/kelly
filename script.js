@@ -12,7 +12,7 @@
   let listings = [];
 
   // Load the directory data.
-  fetch("data.json")
+  fetch("data.json?v=0.11")
     .then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.json();

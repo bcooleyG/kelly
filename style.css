@@ -229,3 +229,11 @@ mark {
 .fine-print {
   font-size: 0.75rem;
 }
+
+.build-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  margin-top: 0.6rem;
+}
