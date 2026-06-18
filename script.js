@@ -5,6 +5,10 @@
   const directory = document.getElementById("directory");
   const resultCount = document.getElementById("result-count");
 
+  // The directory has ~9,000 entries; rendering them all at once locks up
+  // the browser. We only ever paint the first MAX_RESULTS matches.
+  const MAX_RESULTS = 300;
+
   let listings = [];
 
   // Load the directory data.
@@ -17,6 +21,13 @@
       // Sort alphabetically by name so the book reads in order.
       listings = data.slice().sort(function (a, b) {
         return a.name.localeCompare(b.name);
+      });
+      // Precompute the lowercased search text and phone digits once, so
+      // filtering on every keystroke is a cheap string scan.
+      listings.forEach(function (item) {
+        item._hay = (item.name + " " + item.address + " " + item.phone)
+          .toLowerCase();
+        item._digits = item.phone.replace(/\D/g, "");
       });
       render(listings, "");
     })
@@ -45,17 +56,8 @@
     // Normalize digits so "5550142" matches "555-0142".
     const qDigits = q.replace(/\D/g, "");
     return listings.filter(function (item) {
-      const haystack = (
-        item.name +
-        " " +
-        item.address +
-        " " +
-        item.phone
-      ).toLowerCase();
-      if (haystack.indexOf(q) !== -1) return true;
-      if (qDigits && item.phone.replace(/\D/g, "").indexOf(qDigits) !== -1) {
-        return true;
-      }
+      if (item._hay.indexOf(q) !== -1) return true;
+      if (qDigits && item._digits.indexOf(qDigits) !== -1) return true;
       return false;
     });
   }
@@ -72,16 +74,27 @@
       return;
     }
 
-    resultCount.textContent =
-      items.length +
-      (items.length === 1 ? " listing" : " listings") +
-      (query ? ' matching "' + query + '"' : " — entire directory");
+    const shown = items.slice(0, MAX_RESULTS);
+    const total = items.length;
 
-    // Group by first letter of the (already sorted) name.
+    if (total > MAX_RESULTS) {
+      resultCount.textContent =
+        "Showing first " + MAX_RESULTS + " of " + total +
+        (query ? ' matches for "' + query + '"' : " listings") +
+        " — keep typing to narrow it down.";
+    } else {
+      resultCount.textContent =
+        total +
+        (total === 1 ? " listing" : " listings") +
+        (query ? ' matching "' + query + '"' : " — entire directory");
+    }
+
+    // Build everything off-screen in one fragment, then attach once.
+    const frag = document.createDocumentFragment();
     let currentLetter = null;
     let group = null;
 
-    items.forEach(function (item) {
+    shown.forEach(function (item) {
       const letter = item.name.charAt(0).toUpperCase();
       if (letter !== currentLetter) {
         currentLetter = letter;
@@ -91,10 +104,11 @@
         head.className = "letter-head";
         head.textContent = letter;
         group.appendChild(head);
-        directory.appendChild(group);
+        frag.appendChild(group);
       }
       group.appendChild(buildListing(item, query));
     });
+    directory.appendChild(frag);
   }
 
   function buildListing(item, query) {
