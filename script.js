@@ -5,14 +5,30 @@
   const directory = document.getElementById("directory");
   const resultCount = document.getElementById("result-count");
 
-  // The directory has ~9,000 entries; rendering them all at once locks up
-  // the browser. We only ever paint the first MAX_RESULTS matches.
-  const MAX_RESULTS = 300;
+  // The directory has ~9,000 entries; painting them all at once locks up
+  // the browser. Instead we render in batches and add the next batch as the
+  // reader scrolls toward the bottom (infinite scroll).
+  const BATCH = 250;
 
-  let listings = [];
+  let listings = [];   // full directory, sorted
+  let view = [];       // current result set (all listings, or search matches)
+  let rendered = 0;    // how many of `view` are currently in the DOM
+  let viewQuery = "";  // query the current view is highlighted for
+  let lastLetter = null;
+
+  // Sentinel sits at the end of the list; when it scrolls into view we
+  // append the next batch.
+  const sentinel = document.createElement("div");
+  sentinel.className = "scroll-sentinel";
+  const observer = new IntersectionObserver(
+    function (entries) {
+      if (entries[0].isIntersecting) renderMore();
+    },
+    { rootMargin: "800px" }   // start loading before it's actually visible
+  );
 
   // Load the directory data.
-  fetch("data.json?v=0.11")
+  fetch("data.json?v=0.12")
     .then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.json();
@@ -62,8 +78,15 @@
     });
   }
 
+  // Start a fresh view: clear the list, render the first batch, and let the
+  // scroll observer pull in the rest.
   function render(items, query) {
+    observer.unobserve(sentinel);
     directory.innerHTML = "";
+    view = items;
+    viewQuery = query;
+    rendered = 0;
+    lastLetter = null;
 
     if (items.length === 0) {
       resultCount.textContent = 'No listings found for "' + query + '".';
@@ -74,51 +97,46 @@
       return;
     }
 
-    const shown = items.slice(0, MAX_RESULTS);
-    const total = items.length;
+    resultCount.textContent =
+      items.length.toLocaleString() +
+      (items.length === 1 ? " listing" : " listings") +
+      (query ? ' matching "' + query + '"' : " — entire directory");
 
-    if (total > MAX_RESULTS) {
-      resultCount.textContent =
-        "Showing first " + MAX_RESULTS + " of " + total +
-        (query ? ' matches for "' + query + '"' : " listings") +
-        " — keep typing to narrow it down.";
-    } else {
-      resultCount.textContent =
-        total +
-        (total === 1 ? " listing" : " listings") +
-        (query ? ' matching "' + query + '"' : " — entire directory");
-    }
+    renderMore();
+  }
 
-    // Build everything off-screen in one fragment, then attach once.
+  // Append the next batch of the current view to the DOM.
+  function renderMore() {
+    if (rendered >= view.length) return;
+
+    const end = Math.min(rendered + BATCH, view.length);
     const frag = document.createDocumentFragment();
-    let currentLetter = null;
-    let group = null;
 
-    shown.forEach(function (item) {
+    for (let i = rendered; i < end; i++) {
+      const item = view[i];
       const letter = item.name.charAt(0).toUpperCase();
-      if (letter !== currentLetter) {
-        currentLetter = letter;
-        group = document.createElement("div");
-        group.className = "letter-group";
+      if (letter !== lastLetter) {
+        lastLetter = letter;
         const head = document.createElement("h2");
         head.className = "letter-head";
         head.textContent = letter;
-        group.appendChild(head);
-        frag.appendChild(group);
+        frag.appendChild(head);
       }
-      group.appendChild(buildListing(item, query));
-    });
+      frag.appendChild(buildListing(item, viewQuery));
+    }
+    rendered = end;
     directory.appendChild(frag);
 
-    // When the list is capped, tell the reader at the BOTTOM too -- otherwise
-    // hitting entry 300 mid-alphabet looks like the directory just ends.
-    if (total > MAX_RESULTS) {
-      const more = document.createElement("p");
-      more.className = "list-footer";
-      more.textContent =
-        "+ " + (total - MAX_RESULTS) + " more listings not shown. Type a " +
-        "name, number, or street above to find any listing in the directory.";
-      directory.appendChild(more);
+    if (rendered < view.length) {
+      directory.appendChild(sentinel);   // keep sentinel at the very bottom
+      observer.observe(sentinel);
+    } else {
+      observer.unobserve(sentinel);
+      const done = document.createElement("p");
+      done.className = "list-footer";
+      done.textContent =
+        "End of directory — " + view.length.toLocaleString() + " listings.";
+      directory.appendChild(done);
     }
   }
 

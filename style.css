@@ -119,37 +119,45 @@ main {
 }
 
 /* ---- Directory columns ---- */
+/* A grid that flows in document order, so appending more rows during
+   infinite scroll is cheap and never reshuffles what's already on screen.
+   One column on phones; more columns as the screen widens. */
 .directory {
   background: var(--paper);
   border: 1px solid var(--rule);
   padding: 1rem 1.25rem;
-  column-width: 320px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   column-gap: 2rem;
-  column-rule: 1px solid var(--rule);
-}
-
-.letter-group {
-  break-inside: avoid-column;
-  margin-bottom: 1rem;
+  align-content: start;
 }
 
 .letter-head {
+  grid-column: 1 / -1;
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--accent-dark);
   border-bottom: 2px solid var(--ink);
-  margin: 0 0 0.4rem;
+  margin: 0.6rem 0 0.2rem;
   padding-bottom: 0.1rem;
 }
 
+.letter-head:first-child {
+  margin-top: 0;
+}
+
 .listing {
-  break-inside: avoid;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 0.5rem;
   padding: 0.18rem 0;
   border-bottom: 1px dotted var(--rule);
+}
+
+.scroll-sentinel {
+  grid-column: 1 / -1;
+  height: 1px;
 }
 
 .listing .who {
@@ -198,11 +206,11 @@ mark {
   color: var(--ink-soft);
   padding: 1rem;
   text-align: center;
-  column-span: all;
+  grid-column: 1 / -1;
 }
 
 .list-footer {
-  column-span: all;
+  grid-column: 1 / -1;
   margin: 1rem 0 0;
   padding-top: 0.8rem;
   border-top: 2px solid var(--ink);
