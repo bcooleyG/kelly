@@ -1,0 +1,4 @@
+# Source spreadsheets (not served by the site)
+*.xlsx
+*.xls
+*.csv

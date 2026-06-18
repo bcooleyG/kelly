@@ -50,8 +50,6 @@
         " " +
         item.address +
         " " +
-        item.category +
-        " " +
         item.phone
       ).toLowerCase();
       if (haystack.indexOf(q) !== -1) return true;
@@ -110,13 +108,6 @@
     name.className = "name";
     name.innerHTML = highlight(item.name, query);
     who.appendChild(name);
-
-    if (item.category === "business") {
-      const tag = document.createElement("span");
-      tag.className = "tag";
-      tag.textContent = "Business";
-      who.appendChild(tag);
-    }
 
     const addr = document.createElement("span");
     addr.className = "addr";
