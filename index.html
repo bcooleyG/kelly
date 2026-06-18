@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maple County Telephone Directory</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <h1>Maple County</h1>
+      <p class="subtitle">Telephone Directory &amp; Yellow Pages</p>
+      <p class="edition">White Pages &mdash; Residential &amp; Business Listings</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="search-bar">
+      <label for="search" class="visually-hidden">Search the directory</label>
+      <input
+        type="search"
+        id="search"
+        placeholder="Search by name, number, address, or category&hellip;"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <p class="search-hint" id="result-count">Loading listings&hellip;</p>
+    </section>
+
+    <section class="directory" id="directory" aria-live="polite">
+      <!-- Listings are injected here by script.js -->
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <p>Maple County Telephone Co. &bull; Published Annually</p>
+    <p class="fine-print">
+      For emergencies dial 9&ndash;1&ndash;1. Directory assistance: dial 4&ndash;1&ndash;1.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
