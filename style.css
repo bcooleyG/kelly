@@ -201,6 +201,17 @@ mark {
   column-span: all;
 }
 
+.list-footer {
+  column-span: all;
+  margin: 1rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 2px solid var(--ink);
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
 /* ---- Footer ---- */
 .colophon {
   text-align: center;

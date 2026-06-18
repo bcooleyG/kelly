@@ -109,6 +109,17 @@
       group.appendChild(buildListing(item, query));
     });
     directory.appendChild(frag);
+
+    // When the list is capped, tell the reader at the BOTTOM too -- otherwise
+    // hitting entry 300 mid-alphabet looks like the directory just ends.
+    if (total > MAX_RESULTS) {
+      const more = document.createElement("p");
+      more.className = "list-footer";
+      more.textContent =
+        "+ " + (total - MAX_RESULTS) + " more listings not shown. Type a " +
+        "name, number, or street above to find any listing in the directory.";
+      directory.appendChild(more);
+    }
   }
 
   function buildListing(item, query) {
