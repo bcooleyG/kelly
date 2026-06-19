@@ -43,20 +43,24 @@ def stitch_column(seq):
     """
     result = []
     for i, cur in enumerate(seq):
-        if result:
+        # A line starting with a digit is a real business the source filed
+        # phonetically (e.g. "8 Days..." among the E's, "66 Bowl" sorted to
+        # the front), never a wrap tail -- it must not take part in stitching,
+        # either as a fragment or as the trigger that demotes its neighbour.
+        if result and not cur[0].isdigit():
             prev = result[-1]
             fc, fp = cur[0].lower(), prev[0].lower()
             if (fc != fp and cur.lower() < prev.lower()):
-                nxt = seq[i + 1] if i + 1 < len(seq) else None
+                # Look ahead past digit entries, whose front-loaded sort
+                # position would otherwise fool the test below.
+                nxt = next((seq[j] for j in range(i + 1, len(seq))
+                            if not seq[j][0].isdigit()), None)
                 resumes = nxt is None or nxt.lower() >= prev.lower()
-                # A line starting with a digit is a real business the source
-                # filed phonetically (e.g. "8 Days..." among the E's), never a
-                # wrap tail -- so it must not be absorbed.
-                if resumes and not cur[0].isdigit():
+                if resumes:
                     # `prev` is in its proper place; `cur` is the fragment.
                     result[-1] = prev + " " + cur
                     continue
-                elif not resumes and not prev[0].isdigit():
+                elif not prev[0].isdigit():
                     # `prev` itself was the fragment; fold it into the line
                     # above it, then keep `cur` as a normal entry.
                     frag = result.pop()
@@ -68,6 +72,32 @@ def stitch_column(seq):
     return result
 
 
+# A handful of names can't be un-wrapped by sort order alone: the source
+# placed a real business A directly before a business B that was itself split
+# across two rows, so B's first row reads like a valid entry after A. The
+# stitcher pulls B's head onto A and strands B's tail. Each fix below was
+# verified against the spreadsheet's consecutive rows; every mapping is a
+# 1-to-1 rename, so the listing count is unchanged.
+MANUAL_FIXES = {
+    # Bridgeport First United / Methodist Church / Bridgeport Hill Service / Station
+    "Bridgeport First United": "Bridgeport First United Methodist Church",
+    "Methodist Church Bridgeport Hill Service Station":
+        "Bridgeport Hill Service Station",
+    # Dough Boys Pizza / Douglas Walker / Companies
+    "Dough Boys Pizza Douglas Walker": "Dough Boys Pizza",
+    "Companies": "Douglas Walker Companies",
+    # J J's Coney Island / JM Davis Arms & / Historical Museum
+    "J J's Coney Island JM Davis Arms &": "J J's Coney Island",
+    "Historical Museum": "JM Davis Arms & Historical Museum",
+    # X-Ite Homes / Xpedx Paper & Graphics / Store
+    "X-Ite Homes Xpedx Paper & Graphics": "X-Ite Homes",
+    "Store": "Xpedx Paper & Graphics Store",
+    # Zipp Delivery / Zoller Designs & / Antiques
+    "Zipp Delivery Zoller Designs &": "Zipp Delivery",
+    "Antiques": "Zoller Designs & Antiques",
+}
+
+
 def load_names():
     """Return the full A-Z list of names, with wrapped rows stitched."""
     with open(CSV_NAME, encoding="utf-8-sig") as f:
@@ -75,7 +105,7 @@ def load_names():
     names = []
     for col in (0, 2, 4):
         names.extend(stitch_column(column_entries(rows, col)))
-    return names
+    return [MANUAL_FIXES.get(n, n) for n in names]
 
 
 def main():
