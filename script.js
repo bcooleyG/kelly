@@ -28,7 +28,7 @@
   );
 
   // Load the directory data.
-  fetch("data.json?v=0.12")
+  fetch("data.json?v=0.13")
     .then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.json();
@@ -38,12 +38,10 @@
       listings = data.slice().sort(function (a, b) {
         return a.name.localeCompare(b.name);
       });
-      // Precompute the lowercased search text and phone digits once, so
-      // filtering on every keystroke is a cheap string scan.
+      // Precompute the lowercased name once, so filtering on every
+      // keystroke is a cheap string scan.
       listings.forEach(function (item) {
-        item._hay = (item.name + " " + item.address + " " + item.phone)
-          .toLowerCase();
-        item._digits = item.phone.replace(/\D/g, "");
+        item._hay = item.name.toLowerCase();
       });
       render(listings, "");
     })
@@ -69,12 +67,8 @@
   function filterListings(query) {
     if (!query) return listings;
     const q = query.toLowerCase();
-    // Normalize digits so "5550142" matches "555-0142".
-    const qDigits = q.replace(/\D/g, "");
     return listings.filter(function (item) {
-      if (item._hay.indexOf(q) !== -1) return true;
-      if (qDigits && item._digits.indexOf(qDigits) !== -1) return true;
-      return false;
+      return item._hay.indexOf(q) !== -1;
     });
   }
 
@@ -92,7 +86,7 @@
       resultCount.textContent = 'No listings found for "' + query + '".';
       const p = document.createElement("p");
       p.className = "no-results";
-      p.textContent = "No listings found. Try a different name or number.";
+      p.textContent = "No listings found. Try a different name.";
       directory.appendChild(p);
       return;
     }
@@ -143,26 +137,7 @@
   function buildListing(item, query) {
     const row = document.createElement("div");
     row.className = "listing";
-
-    const who = document.createElement("div");
-    who.className = "who";
-
-    const name = document.createElement("span");
-    name.className = "name";
-    name.innerHTML = highlight(item.name, query);
-    who.appendChild(name);
-
-    const addr = document.createElement("span");
-    addr.className = "addr";
-    addr.innerHTML = highlight(item.address, query);
-    who.appendChild(addr);
-
-    const number = document.createElement("span");
-    number.className = "number";
-    number.innerHTML = highlight(item.phone, query);
-
-    row.appendChild(who);
-    row.appendChild(number);
+    row.innerHTML = highlight(item.name, query);
     return row;
   }
 

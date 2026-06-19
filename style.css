@@ -127,7 +127,7 @@ main {
   border: 1px solid var(--rule);
   padding: 1rem 1.25rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   column-gap: 2rem;
   align-content: start;
 }
@@ -147,52 +147,14 @@ main {
 }
 
 .listing {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-  padding: 0.18rem 0;
+  padding: 0.22rem 0;
   border-bottom: 1px dotted var(--rule);
+  font-weight: 700;
 }
 
 .scroll-sentinel {
   grid-column: 1 / -1;
   height: 1px;
-}
-
-.listing .who {
-  min-width: 0;
-}
-
-.listing .name {
-  font-weight: 700;
-}
-
-.listing .tag {
-  display: inline-block;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #fff;
-  background: var(--accent-dark);
-  padding: 0.05rem 0.35rem;
-  border-radius: 2px;
-  vertical-align: middle;
-  margin-left: 0.35rem;
-}
-
-.listing .addr {
-  display: block;
-  font-size: 0.82rem;
-  font-style: italic;
-  color: var(--ink-soft);
-}
-
-.listing .number {
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  font-weight: 700;
-  letter-spacing: 0.02em;
 }
 
 mark {
