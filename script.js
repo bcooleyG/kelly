@@ -28,20 +28,22 @@
   );
 
   // Load the directory data.
-  fetch("data.json?v=0.16")
+  fetch("data.json?v=0.17")
     .then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.json();
     })
     .then(function (data) {
-      // Sort alphabetically by name so the book reads in order.
+      // Sort by the spoken sort key so number-leading names file as if
+      // spelled out ("66 Rising" -> "Sixty-Six Rising", under S).
       listings = data.slice().sort(function (a, b) {
-        return a.name.localeCompare(b.name);
+        return sortKey(a).localeCompare(sortKey(b));
       });
-      // Precompute the lowercased name once, so filtering on every
-      // keystroke is a cheap string scan.
+      // Precompute the lowercased name (for search) and the section letter
+      // (from the sort key) once, so per-keystroke work stays cheap.
       listings.forEach(function (item) {
         item._hay = item.name.toLowerCase();
+        item._letter = sortKey(item).charAt(0).toUpperCase();
       });
       render(listings, "");
     })
@@ -63,6 +65,12 @@
       render(matches, q);
     }, 120);
   });
+
+  // The key a listing files under: its spoken form if it has one (number-
+  // leading names), otherwise the name itself.
+  function sortKey(item) {
+    return item.sort || item.name;
+  }
 
   function filterListings(query) {
     if (!query) return listings;
@@ -108,7 +116,7 @@
 
     for (let i = rendered; i < end; i++) {
       const item = view[i];
-      const letter = item.name.charAt(0).toUpperCase();
+      const letter = item._letter;
       if (letter !== lastLetter) {
         lastLetter = letter;
         const head = document.createElement("h2");

@@ -2955,7 +2955,8 @@
     "name": "Ehrle's Party & Carnival Supply"
   },
   {
-    "name": "8 Days A Week Sandwich Shop"
+    "name": "8 Days A Week Sandwich Shop",
+    "sort": "Eight Days A Week Sandwich Shop"
   },
   {
     "name": "Eighth Floor The"
@@ -3411,10 +3412,12 @@
     "name": "Fountains Restaurant"
   },
   {
-    "name": "4D Cattle Co"
+    "name": "4D Cattle Co",
+    "sort": "Four-D Cattle Co"
   },
   {
-    "name": "4 Day Furniture Sale"
+    "name": "4 Day Furniture Sale",
+    "sort": "Four Day Furniture Sale"
   },
   {
     "name": "GARRETT - GRAYBAR"
@@ -6138,7 +6141,8 @@
     "name": "Nines Barber & Spa"
   },
   {
-    "name": "99 Cents Maze"
+    "name": "99 Cents Maze",
+    "sort": "Ninety-Nine Cents Maze"
   },
   {
     "name": "Nirvana Inc"
@@ -6321,10 +6325,12 @@
     "name": "One Eton Square"
   },
   {
-    "name": "100th Meridian Museum"
+    "name": "100th Meridian Museum",
+    "sort": "One Hundredth Meridian Museum"
   },
   {
-    "name": "1 Step Ahead Beauty Salon"
+    "name": "1 Step Ahead Beauty Salon",
+    "sort": "One Step Ahead Beauty Salon"
   },
   {
     "name": "One Stop Convenience Store"
@@ -7443,10 +7449,12 @@
     "name": "Seven-D Trailer Sales"
   },
   {
-    "name": "7 Ply Skate Park"
+    "name": "7 Ply Skate Park",
+    "sort": "Seven Ply Skate Park"
   },
   {
-    "name": "7th Floor Consulting"
+    "name": "7th Floor Consulting",
+    "sort": "Seventh Floor Consulting"
   },
   {
     "name": "Sewell & Taylor CPA"
@@ -8547,7 +8555,8 @@
     "name": "Twistercity Cycle Works"
   },
   {
-    "name": "2 Fellas & A Big Vehicle"
+    "name": "2 Fellas & A Big Vehicle",
+    "sort": "Two Fellas & A Big Vehicle"
   },
   {
     "name": "Moving Co"
@@ -12270,10 +12279,12 @@
     "name": "Findley Welding Supply"
   },
   {
-    "name": "4-J Aviation"
+    "name": "4-J Aviation",
+    "sort": "Four-J Aviation"
   },
   {
-    "name": "420 Saloon"
+    "name": "420 Saloon",
+    "sort": "Four Twenty Saloon"
   },
   {
     "name": "Four Seasons Sunrooms"
@@ -17154,7 +17165,8 @@
     "name": "Third Street Clayworks"
   },
   {
-    "name": "36th Street Used Cars"
+    "name": "36th Street Used Cars",
+    "sort": "Thirty-Sixth Street Used Cars"
   },
   {
     "name": "This & That Hardware"
@@ -20682,10 +20694,12 @@
     "name": "Dynamite Pest Control"
   },
   {
-    "name": "1889 Territorial School House"
+    "name": "1889 Territorial School House",
+    "sort": "Eighteen Eighty-Nine Territorial School House"
   },
   {
-    "name": "89er Trail"
+    "name": "89er Trail",
+    "sort": "Eighty-Niner Trail"
   },
   {
     "name": "E C Plumbing & Drain"
@@ -21132,7 +21146,8 @@
     "name": "Five D"
   },
   {
-    "name": "5-Eleven"
+    "name": "5-Eleven",
+    "sort": "Five-Eleven"
   },
   {
     "name": "Five Oaks Inc"
@@ -21141,7 +21156,8 @@
     "name": "Five R Farms"
   },
   {
-    "name": "5 7 Equipment"
+    "name": "5 7 Equipment",
+    "sort": "Five Seven Equipment"
   },
   {
     "name": "Five Star BBQ & Steak"
@@ -25338,25 +25354,32 @@
     "name": "Six Byte Computer Solution"
   },
   {
-    "name": "66 Bowl"
+    "name": "66 Bowl",
+    "sort": "Sixty-Six Bowl"
   },
   {
-    "name": "66 Collision Center"
+    "name": "66 Collision Center",
+    "sort": "Sixty-Six Collision Center"
   },
   {
-    "name": "66 Court Motel"
+    "name": "66 Court Motel",
+    "sort": "Sixty-Six Court Motel"
   },
   {
-    "name": "66 Pawn"
+    "name": "66 Pawn",
+    "sort": "Sixty-Six Pawn"
   },
   {
-    "name": "66 Rising"
+    "name": "66 Rising",
+    "sort": "Sixty-Six Rising"
   },
   {
-    "name": "66 To Go"
+    "name": "66 To Go",
+    "sort": "Sixty-Six To Go"
   },
   {
-    "name": "66 Tree House"
+    "name": "66 Tree House",
+    "sort": "Sixty-Six Tree House"
   },
   {
     "name": "Skarke Elizabeth A"
@@ -25920,7 +25943,8 @@
     "name": "Three C's Medical Clinic"
   },
   {
-    "name": "3 Point Wheels"
+    "name": "3 Point Wheels",
+    "sort": "Three Point Wheels"
   },
   {
     "name": "Three Rivers Corp"
