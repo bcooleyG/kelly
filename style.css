@@ -47,18 +47,24 @@ body {
 
 /* ---- Masthead ---- */
 .masthead {
-  background: var(--accent);
+  background: #fff;
+  border-top: 6px solid var(--accent);
   border-bottom: 4px double var(--ink);
   text-align: center;
-  padding: 1.6rem 1rem 1.2rem;
+  padding: 1.4rem 1rem 1.2rem;
 }
 
-.masthead-inner h1 {
+.masthead-inner .logo {
   margin: 0;
-  font-size: clamp(2.4rem, 7vw, 4rem);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-weight: 700;
+  line-height: 0;
+}
+
+.masthead-inner .logo img {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  margin: 0 auto;
 }
 
 .subtitle {
