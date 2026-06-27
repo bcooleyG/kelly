@@ -28,7 +28,7 @@
   );
 
   // Load the directory data.
-  fetch("data.json?v=0.18")
+  fetch("data.json?v=0.19")
     .then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.json();

@@ -47,11 +47,10 @@ body {
 
 /* ---- Masthead ---- */
 .masthead {
-  background: #fff;
-  border-top: 6px solid var(--accent);
+  background: var(--accent);
   border-bottom: 4px double var(--ink);
   text-align: center;
-  padding: 1.4rem 1rem 1.2rem;
+  padding: 0;
 }
 
 .masthead-inner .logo {
@@ -62,9 +61,8 @@ body {
 .masthead-inner .logo img {
   display: block;
   width: 100%;
-  max-width: 440px;
   height: auto;
-  margin: 0 auto;
+  margin: 0;
 }
 
 /* ---- Layout ---- */
